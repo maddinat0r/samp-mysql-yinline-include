@@ -57,6 +57,7 @@ stock mysql_tquery_inline(MySQL:handle, const query[], callback:inline_callback,
 	new args_count_native_byte = (args_count - num_const_args + num_const_args_native) * 4;
 	new inline_res_cb[] = "__MysqlInlineProcessCallback";
 	new cb_data_size = sizeof cb_data;
+	new return_val;
 	
 	new first_vparam_addr;
 	
@@ -90,13 +91,16 @@ stock mysql_tquery_inline(MySQL:handle, const query[], callback:inline_callback,
 	
 	#emit SYSREQ.C mysql_tquery
 	
+	#emit STOR.S.pri return_val
+	
 	#emit STACK 4 //args_count_native_byte
 	
 	for(new i = args_count_native_byte / 4; i > 0; --i)
 	{
 		#emit STACK 4
 	}
-	return 1;
+	
+	return return_val;
 }
 
 forward __MysqlInlineProcessCallback(const params_format[], cb_data[E_CALLBACK_DATA], cb_data_size, ...);
