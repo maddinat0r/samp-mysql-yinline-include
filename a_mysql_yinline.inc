@@ -95,7 +95,7 @@ stock mysql_tquery_inline(MySQL:handle, const query[], callback:inline_callback,
 	
 	#emit STACK 4 //args_count_native_byte
 	
-	for(new i = args_count_native_byte / 4; i > 0; --i)
+	for(; args_count_native_byte > 0; args_count_native_byte -= 4)
 	{
 		#emit STACK 4
 	}
