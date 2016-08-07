@@ -20,19 +20,21 @@
 	#error You have to include the y_inline include before this one!
 #endif
 
+
 /*
 native mysql_tquery_inline(MySQL:handle, const query[], callback:Callback, const format[], {Float,_}:...);
 native mysql_pquery_inline(MySQL:handle, const query[], callback:Callback, const format[], {Float,_}:...);
 */
 
 /*
-native orm_select_inline(ORM:id, callback:Callback, format[], {Float,_}:...);
-native orm_update_inline(ORM:id, callback:Callback, format[], {Float,_}:...);
-native orm_insert_inline(ORM:id, callback:Callback, format[], {Float,_}:...);
-native orm_delete_inline(ORM:id, callback:Callback, format[], {Float,_}:...);
-native orm_load_inline(ORM:id, callback:Callback, format[], {Float,_}:...);
-native orm_save_inline(ORM:id, callback:Callback, format[], {Float,_}:...);
+native orm_select_inline(ORM:id, callback:Callback, const format[], {Float,_}:...);
+native orm_update_inline(ORM:id, callback:Callback, const format[], {Float,_}:...);
+native orm_insert_inline(ORM:id, callback:Callback, const format[], {Float,_}:...);
+native orm_delete_inline(ORM:id, callback:Callback, const format[], {Float,_}:...);
+native orm_load_inline(ORM:id, callback:Callback, const format[], {Float,_}:...);
+native orm_save_inline(ORM:id, callback:Callback, const format[], {Float,_}:...);
 */
+
 
 forward __int_MysqlInline_Invoke();
 public __int_MysqlInline_Invoke()
@@ -49,7 +51,7 @@ stock mysql_tquery_inline(MySQL:handle, const query[], callback:inline_callback,
 	if(!Callback_Get(inline_callback, cb_data))
 		return false;
 	
-	new cb_format[33] = "sad";
+	new cb_format[33] = "sad"; // :(
 	strcat(cb_format, format);
 	
 	new args_count = numargs();
