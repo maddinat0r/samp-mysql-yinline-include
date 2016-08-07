@@ -16,6 +16,10 @@
 #tryinclude <YSI_Coding\y_inline>
 #tryinclude <YSI\y_inline>
 
+#if !defined _INC_y_inline
+	#error You have to include the y_inline include before this one!
+#endif
+
 /*
 native mysql_tquery_inline(MySQL:handle, const query[], callback:Callback, const format[], {Float,_}:...);
 native mysql_pquery_inline(MySQL:handle, const query[], callback:Callback, const format[], {Float,_}:...);
