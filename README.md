@@ -1,5 +1,5 @@
 # y_inline callbacks for BlueG's MySQL plugin
-This is a SA-MP PAWN include which adds support for y_inline callbacks to be used with BlueG's MySQL plugin. Simply include it in your gamemode and/or filterscript/s and you're ready to go.
+This is a SA-MP PAWN include which adds support for y_inline callbacks to be used with BlueG's MySQL plugin version R40 and higher. Simply include it in your gamemode and/or filterscript/s and you're ready to go.
 
 ##Available functions:
 ```pawn
