@@ -592,7 +592,11 @@ public __MysqlInlineProcessCallback(const params_format[], cb_data[E_CALLBACK_DA
 	
 	#emit PUSH.S args_count_native_byte
 	
-	#emit CALL Callback_Call
+	#emit LCTRL 6
+	#emit ADD.C 28 // (4+4) + 4 + (4+4) + (4+4)
+	#emit PUSH.pri
+	#emit CONST.pri Callback_Call
+	#emit SCTRL 6
 	
 	Callback_Release(cb_data);
 	return 1;
