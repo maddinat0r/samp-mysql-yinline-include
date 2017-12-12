@@ -27,15 +27,14 @@ main() { }
 
 public OnGameModeInit()
 {
- 	inline InlineCallback(number, Float:flt, string:str[])
- 	{
- 	    new value;
-		new retval = cache_get_value_int(0, 0, value);
-		if(!retval)
+	inline InlineCallback(number, Float:flt, string:str[])
+	{
+		new value;
+		if(!cache_get_value_int(0, 0, value))
 			printf("some error happened, check the MySQL log!");
- 	}
+	}
 	
- 	new ret = mysql_tquery_inline(
+	new ret = mysql_tquery_inline(
 				g_Mysql, "SELECT 1", 
 				using inline InlineCallback, "dfs", 23, 3.1424512, "banana");
 		
@@ -44,4 +43,5 @@ public OnGameModeInit()
 	
 	return 1;
 }
+
 ```
