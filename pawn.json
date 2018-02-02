@@ -1,0 +1,5 @@
+{
+   "user": "maddinat0r",
+    "repo": "samp-mysql-yinline-include",
+    "dependencies": ["pawn-lang/YSI-Includes"]
+}
