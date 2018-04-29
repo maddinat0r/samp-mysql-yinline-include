@@ -24,6 +24,7 @@
 /*
 native mysql_tquery_inline(MySQL:handle, const query[], callback:Callback, const format[], {Float,_}:...);
 native mysql_pquery_inline(MySQL:handle, const query[], callback:Callback, const format[], {Float,_}:...);
+native mysql_tquery_file_inline(MySQL:handle, const file_path[], callback:inline_callback, const format[] = "", {Float,_}:...);
 */
 
 /*
@@ -41,6 +42,7 @@ public __int_MysqlInline_Invoke()
 {
 	mysql_tquery(MYSQL_INVALID_HANDLE, "");
 	mysql_pquery(MYSQL_INVALID_HANDLE, "");
+	mysql_tquery_file(MYSQL_INVALID_HANDLE, "");
 	
 	orm_select(MYSQL_INVALID_ORM);
 	orm_update(MYSQL_INVALID_ORM);
@@ -173,6 +175,69 @@ stock mysql_pquery_inline(MySQL:handle, const query[], callback:inline_callback,
 		#emit STACK 4
 	}
 	
+	return return_val;
+}
+
+stock mysql_tquery_file_inline(MySQL:handle, const file_path[], callback:inline_callback, const format[] = "", {Float,_}:...)
+{
+	const num_const_args = 4;
+	const num_const_args_native = 7;
+
+	new cb_data[E_CALLBACK_DATA];
+	if(!Callback_Get(inline_callback, cb_data))
+		return false;
+
+	new cb_format[33] = "sad"; // :(
+	strcat(cb_format, format);
+
+	new args_count = numargs();
+	new args_count_byte = args_count * 4;
+	new args_count_native_byte = (args_count - num_const_args + num_const_args_native) * 4;
+	new inline_res_cb[] = "__MysqlInlineProcessCallback";
+	new cb_data_size = sizeof cb_data;
+	new return_val;
+
+	new first_vparam_addr;
+
+	//write address of 'format' into 'first_vparam_addr'
+	#emit ADDR.PRI format // PRI = FRM + format
+	#emit STOR.S.pri first_vparam_addr //[FRM + first_vparam_addr] = PRI
+
+	new param_addr = first_vparam_addr + (args_count_byte - num_const_args * 4);
+	for (; param_addr > first_vparam_addr; param_addr -= 4)
+	{
+		//load vararg into PRI
+		#emit LOAD.S.pri param_addr //PRI = [FRM + param_addr]
+
+		//variable arguments are always references, so we have
+		//to dereference it to get the actual value
+		#emit LOAD.I //PRI = [PRI]
+
+		#emit PUSH.pri
+	}
+
+
+	#emit PUSH.ADR cb_data_size
+	#emit PUSH.ADR cb_data
+	#emit PUSH.S format
+	#emit PUSH.ADR cb_format
+	#emit PUSH.ADR inline_res_cb
+	#emit PUSH.S file_path
+	#emit PUSH.S handle
+
+	#emit PUSH.S args_count_native_byte
+
+	#emit SYSREQ.C mysql_tquery_file
+
+	#emit STOR.S.pri return_val
+
+	#emit STACK 4 //args_count_native_byte
+
+	for(; args_count_native_byte > 0; args_count_native_byte -= 4)
+	{
+		#emit STACK 4
+	}
+
 	return return_val;
 }
 
