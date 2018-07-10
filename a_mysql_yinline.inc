@@ -124,7 +124,7 @@ stock mysql_pquery_inline(MySQL:handle, const query[], callback:inline_callback,
 	if(!Callback_Get(inline_callback, cb_data))
 		return false;
 	
-	new cb_format[33] = "sad";
+	new cb_format[33] = "sad"; // :(
 	strcat(cb_format, format);
 	
 	new args_count = numargs();
